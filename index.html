@@ -1,19 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Document</title>
-</head>
+    <style>
+      body {
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background-color: lightblue;
+        overflow: hidden;
+      }
+    
+      .controls{
+          display: flex;
+          flex-direction: column;
+      }
 
-<body>
+      .controls div{
+        border: 1px solid black;
+        cursor: pointer;
+        text-align: center;
+        padding : 15px;
+      }
 
+    </style>
+  </head>
+
+  <body>
     <div id="canvas-container">
-        <canvas height= "400" width= "900"  id="myCanvas"></canvas>
+      <canvas height="800" width="800" id="myCanvas"></canvas>
+    </div>
+    <div class="controls">
+        <div class="randomButton">Random</div>
+        <div>Animate</div>
     </div>
 
     <script type="module" src="index.js"></script>
-</body>
-
+  </body>
 </html>

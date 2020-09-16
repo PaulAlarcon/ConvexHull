@@ -1,12 +1,10 @@
 import {CH} from './grahamScan.js'
-import {createRandomPoints} from './util/util.js'
-
 
 const context = document.querySelector("#myCanvas").getContext("2d");
 const height = context.canvas.height;
 const width = context.canvas.width;
 const scale = 50;
-const portion = 10;
+const portion = 5;
 const numberYLines = height / scale;
 const numberXLines = width / scale;
 
@@ -28,7 +26,7 @@ function drawLine(x1, y1, x2, y2, color = "black", lineW = 1) {
   context.stroke();
 }
 
-export function drawCircle(p, color = "blue") {
+function drawCircle(p, color = "blue") {
   context.beginPath();
   context.arc(
     p.x * scale,
@@ -46,18 +44,16 @@ function drawGrid(){
   for (let i = 1; i < numberXLines; ++i) drawLine(0, i * scale, width, i * scale);
 }
 
+canvasPaint();
+drawGrid();
 
+let arrPoints = [
 
+];
 
-
-let arrPoints = [];
-
-export const repaint = () => {
-  canvasPaint();
-  drawGrid();
-}
-
-repaint();
+// arrPoints.forEach( p => drawCircle(p));
+// let ans = CH(arrPoints);
+// drawConvexHull()
 
 const rect = context.canvas.getBoundingClientRect();
 
@@ -84,36 +80,21 @@ context.canvas.addEventListener("mousemove", (evt) => {
   div.innerHTML = "x: " + x/scale + " y: " + y/scale;
 });
 
-// document.body.addEventListener("mousemove", (evt) => {
-//   console.log("hey");
-// })
-
-
-function init() {
-  arrPoints = createRandomPoints(100, width/scale, height/scale)
+context.canvas.addEventListener("click", (evt) => {
+  let x = (evt.clientX - rect.left)/scale;
+  let y =(height - (evt.clientY - rect.top))/scale;
+  arrPoints.push({x, y});
   canvasPaint();
   drawGrid();
   arrPoints.forEach( p => drawCircle(p));
-  ans = CH(arrPoints, canvasPaint);
-  if(ans.length > 1) drawConvexHull()
-}
+  console.log(arrPoints);
+  if(arrPoints.length > 2){
+    ans = CH(arrPoints);
+    console.log(ans);
+    drawConvexHull()
+  }
 
-document.querySelector('.randomButton').addEventListener('click', init);
-
-
-// context.canvas.addEventListener("click", (evt) => {
-//   let x = (evt.clientX - rect.left)/scale;
-//   let y =(height - (evt.clientY - rect.top))/scale;
-//   arrPoints.push({x, y});
-//   canvasPaint();
-//   drawGrid();
-//   arrPoints.forEach( p => drawCircle(p));
-//   if(arrPoints.length > 2){
-//     ans = CH(arrPoints);
-//     drawConvexHull()
-//   }
-
-// });
+});
 
 
 
@@ -131,34 +112,5 @@ function drawConvexHull(){
     drawLine(x1, y1, x2, y2, "green", 10);
 })
 }
-
-export function drawStack(stack, solved){
-  stack.forEach((p,index) => {
-    let next = 0;
-    if(index != stack.length - 1){
-      next = index + 1;
-      drawLine(
-        p.x * scale,
-        height - p.y * scale,
-        stack[next].x * scale,
-        height - stack[next].y * scale,
-        "black", 5
-        );
-    }
-
-    else if(solved){
-      drawLine(
-        p.x * scale,
-        height - p.y * scale,
-        stack[next].x * scale,
-        height - stack[next].y * scale,
-        "black", 5
-        );
-    }
-
-
-    })
-}
-
 
 
